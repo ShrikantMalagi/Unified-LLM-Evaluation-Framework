@@ -49,7 +49,7 @@ Output format (strict):
 ## Repository Structure
 
 ```
-llm-eval-orchestrator/
+llm-eval-Framework/
   core/
   adapters/
   metrics/
