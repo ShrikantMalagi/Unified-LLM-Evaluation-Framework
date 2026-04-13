@@ -1,4 +1,4 @@
-"""Core abstractions for the orchestrator."""
+"""Core abstractions for the framework."""
 
 from .dataset import EvalSample, Dataset, normalize_dataset
 from .model import Model, CallableModel
