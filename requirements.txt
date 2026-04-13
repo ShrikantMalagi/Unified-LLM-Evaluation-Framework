@@ -1,0 +1,7 @@
+deepeval
+ragas
+datasets
+pandas
+pytest
+
+mlflow
