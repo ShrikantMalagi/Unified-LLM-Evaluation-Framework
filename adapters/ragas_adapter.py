@@ -76,6 +76,8 @@ class RagasEvaluator(Evaluator):
         hf_dataset = HFDataset.from_list(rows)
         result = ragas_evaluate(hf_dataset, metrics=metrics)
         scores = self._extract_scores(result)
+        if "answer_relevancy" in scores and "answer_relevance" not in scores:
+            scores["answer_relevance"] = scores.pop("answer_relevancy")
         latency = time.perf_counter() - start
 
         return {
