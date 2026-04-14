@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unified-llm-evaluation-framework"
+version = "0.1.0"
+description = "A lightweight framework that routes LLM evaluation datasets to existing evaluation libraries."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Shrikant Malagi" },
+]
+dependencies = []
+
+[project.optional-dependencies]
+qa = ["deepeval"]
+rag = ["ragas", "datasets", "pandas"]
+mlflow = ["mlflow"]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["adapters", "core", "metrics", "runners"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
