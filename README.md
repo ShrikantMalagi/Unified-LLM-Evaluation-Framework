@@ -5,8 +5,17 @@ This project is a framework that routes datasets to existing evaluation librarie
 ## Quick Start
 
 ```powershell
-$env:PYTHONPATH = (Get-Location)
-python .\examples\qa_eval.py
+python -m pip install -e .[dev]
+pytest -q
+python -m examples.qa_eval
+```
+
+Install backend extras as needed:
+
+```powershell
+python -m pip install -e .[qa]
+python -m pip install -e .[rag]
+python -m pip install -e .[mlflow]
 ```
 
 ## Unified API
@@ -104,7 +113,8 @@ All datasets are normalized to `EvalSample` internally.
 
 ## Notes
 
-- The repo root contains the Python modules; add it to `PYTHONPATH` to run examples from elsewhere.
+- Install the repo with `pip install -e .` so imports and tests work without setting `PYTHONPATH` manually.
+- Run examples from the repo root with `python -m examples.qa_eval` or `python -m examples.rag_eval`.
 - DeepEval metrics vary by version. If a default metric is missing, pass explicit metric objects to `DeepEvalEvaluator`.
 - RAG evaluation requires `context` per sample.
 - Code evaluation executes model-generated code. Only run trusted inputs.
