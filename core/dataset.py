@@ -26,10 +26,33 @@ def _ensure_list(value: str | list[str] | None) -> list[str] | None:
         return value
     return [value]
 
+
 def _require(value: Any, field: str, task_type: str) -> Any:
     if value is None or value == "":
         raise ValueError(f"Missing required field '{field}' for task_type='{task_type}'")
     return value
+
+
+def _normalize_chat_messages(messages: Any, task_type: str) -> str:
+    if not isinstance(messages, list):
+        raise ValueError(f"Field 'messages' for task_type='{task_type}' must be a list")
+
+    rendered: list[str] = []
+    for idx, message in enumerate(messages):
+        if isinstance(message, str):
+            rendered.append(message)
+            continue
+
+        if not isinstance(message, dict):
+            raise ValueError(
+                f"messages[{idx}] for task_type='{task_type}' must be a string or dict with role/content"
+            )
+
+        role = _require(message.get("role"), f"messages[{idx}].role", task_type)
+        content = _require(message.get("content"), f"messages[{idx}].content", task_type)
+        rendered.append(f"{role}: {content}")
+
+    return "\n".join(rendered)
 
 
 def _normalize_sample(raw: dict[str, Any], task_type: str) -> EvalSample:
@@ -69,8 +92,8 @@ def _normalize_sample(raw: dict[str, Any], task_type: str) -> EvalSample:
 
     if task == "chat":
         messages = raw.get("messages")
-        if isinstance(messages, list):
-            rendered = "\n".join(str(m) for m in messages)
+        if messages is not None:
+            rendered = _normalize_chat_messages(messages, task_type)
         else:
             rendered = raw.get("input") or raw.get("prompt") or ""
         expected = raw.get("answer") or raw.get("expected_output")
