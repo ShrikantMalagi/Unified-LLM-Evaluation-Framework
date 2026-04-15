@@ -16,6 +16,7 @@ Install backend extras as needed:
 python -m pip install -e .[qa]
 python -m pip install -e .[rag]
 python -m pip install -e .[mlflow]
+python -m examples.chat_eval
 ```
 
 ## Unified API
@@ -108,8 +109,18 @@ Unified-LLM-Evaluation-Framework/
 - QA: `{ "question": "...", "answer": "..." }`
 - RAG: `{ "query": "...", "context": "...", "answer": "..." }`
 - Code: `{ "prompt": "...", "tests": ["assert ..."] }`
+- Chat: `{ "messages": [{"role": "system", "content": "..."}, {"role": "user", "content": "..."}], "answer": "..." }`
 
 All datasets are normalized to `EvalSample` internally.
+
+Chat messages are rendered into a single prompt string before evaluation:
+
+```text
+system: Answer in one short sentence.
+user: What is the capital of France?
+```
+
+Each `messages` item may be either a string or a dict with `role` and `content`. Dict-based messages are the recommended format because they preserve speaker intent explicitly.
 
 ## Notes
 
