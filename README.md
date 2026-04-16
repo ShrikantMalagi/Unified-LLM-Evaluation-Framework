@@ -127,5 +127,6 @@ Each `messages` item may be either a string or a dict with `role` and `content`.
 - Install the repo with `pip install -e .` so imports and tests work without setting `PYTHONPATH` manually.
 - Run examples from the repo root with `python -m examples.qa_eval` or `python -m examples.rag_eval`.
 - DeepEval metrics vary by version. If a default metric is missing, pass explicit metric objects to `DeepEvalEvaluator`.
+- Dependency upgrades for `deepeval` and `ragas` are guarded by adapter compatibility tests; run `pytest -q` after changing versions to catch API drift.
 - RAG evaluation requires `context` per sample.
 - Code evaluation executes model-generated code. Only run trusted inputs.
