@@ -4,6 +4,7 @@ from types import ModuleType
 import pytest
 
 from adapters.deepeval_adapter import DeepEvalEvaluator
+from core.dataset import Dataset, EvalSample
 from core.model import CallableModel
 from runners.evaluate import evaluate
 
@@ -114,3 +115,55 @@ def test_deepeval_evaluator_passes_metric_kwargs(monkeypatch):
 
     assert seen_kwargs == {"threshold": 0.5, "model": "judge-model"}
     assert result["scores"]["relevance"] == pytest.approx(1.0)
+
+
+def test_deepeval_missing_builtin_metric_fails_loudly(monkeypatch):
+    metrics_module = ModuleType("deepeval.metrics")
+    metrics_module.AnswerRelevancyMetric = object
+    metrics_module.CorrectnessMetric = object
+
+    deepeval_module = ModuleType("deepeval")
+    deepeval_module.metrics = metrics_module
+
+    monkeypatch.setitem(sys.modules, "deepeval", deepeval_module)
+
+    evaluator = DeepEvalEvaluator()
+
+    with pytest.raises(ValueError, match="hallucination"):
+        evaluator._build_metrics()
+
+
+def test_deepeval_accepts_explicit_metric_objects(monkeypatch):
+    class ExplicitMetric:
+        name = "judge_score"
+
+        def __init__(self):
+            self.score = None
+
+        def measure(self, test_case):
+            assert test_case.input == "What is 2+2?"
+            self.score = 0.9
+
+    deepeval_module = ModuleType("deepeval")
+    deepeval_module.metrics = ModuleType("deepeval.metrics")
+
+    class DummyLLMTestCase:
+        def __init__(self, input, actual_output, expected_output, context):
+            self.input = input
+            self.actual_output = actual_output
+            self.expected_output = expected_output
+            self.context = context
+
+    test_case_module = ModuleType("deepeval.test_case")
+    test_case_module.LLMTestCase = DummyLLMTestCase
+
+    monkeypatch.setitem(sys.modules, "deepeval", deepeval_module)
+    monkeypatch.setitem(sys.modules, "deepeval.test_case", test_case_module)
+
+    evaluator = DeepEvalEvaluator(metrics=[ExplicitMetric()])
+    dataset = Dataset(samples=[EvalSample(input="What is 2+2?", expected_output="4")], task_type="qa")
+    model = CallableModel(name="qa-model", fn=lambda _prompt: "4")
+
+    result = evaluator.evaluate(dataset, model)
+
+    assert result["scores"]["judge_score"] == pytest.approx(0.9)
