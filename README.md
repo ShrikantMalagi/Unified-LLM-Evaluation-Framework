@@ -129,4 +129,6 @@ Each `messages` item may be either a string or a dict with `role` and `content`.
 - DeepEval metrics vary by version. If a default metric is missing, pass explicit metric objects to `DeepEvalEvaluator`.
 - Dependency upgrades for `deepeval` and `ragas` are guarded by adapter compatibility tests; run `pytest -q` after changing versions to catch API drift.
 - RAG evaluation requires `context` per sample.
-- Code evaluation executes model-generated code. Only run trusted inputs.
+- Code evaluation defaults to a separate Python process with a timeout. For stronger isolation, use `CodeEvaluator(execution_mode="docker")` to run code in a locked-down container.
+- Docker mode expects a local Docker daemon and uses `--network none`, `--read-only`, capability drops, PID limits, CPU/memory limits, and tmpfs-backed writable scratch paths.
+- Even in Docker mode, generated code should still be treated as untrusted and handled cautiously.
