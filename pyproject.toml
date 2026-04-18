@@ -25,3 +25,6 @@ packages = ["adapters", "core", "metrics", "runners"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+  "docker: real Docker smoke tests; opt in with RUN_DOCKER_SMOKE=1",
+]
