@@ -131,4 +131,5 @@ Each `messages` item may be either a string or a dict with `role` and `content`.
 - RAG evaluation requires `context` per sample.
 - Code evaluation defaults to a separate Python process with a timeout. For stronger isolation, use `CodeEvaluator(execution_mode="docker")` to run code in a locked-down container.
 - Docker mode expects a local Docker daemon and uses `--network none`, `--read-only`, capability drops, PID limits, CPU/memory limits, and tmpfs-backed writable scratch paths.
+- Real Docker smoke tests are opt-in: run `RUN_DOCKER_SMOKE=1 pytest -q -m docker` on shells that support POSIX env syntax, or `$env:RUN_DOCKER_SMOKE='1'; pytest -q -m docker` in PowerShell.
 - Even in Docker mode, generated code should still be treated as untrusted and handled cautiously.
