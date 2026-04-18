@@ -1,0 +1,16 @@
+# Direct dependency constraints for reproducible local/CI installs.
+# Refresh intentionally after running the compatibility test suite.
+#
+# Sources checked on PyPI on 2026-04-18:
+# - deepeval 3.9.7
+# - ragas 0.4.3
+# - datasets 4.5.0
+# - pandas 2.3.3
+# - pytest 9.0.3
+# - mlflow 3.10.1
+deepeval==3.9.7
+ragas==0.4.3
+datasets==4.5.0
+pandas==2.3.3
+pytest==9.0.3
+mlflow==3.10.1
