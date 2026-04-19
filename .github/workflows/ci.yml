@@ -23,7 +23,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install package and test dependencies
-        run: python -m pip install -e .[dev]
+        run: python -m pip install -r requirements-dev.txt
 
       - name: Run test suite
         run: pytest -q
@@ -42,7 +42,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install package and test dependencies
-        run: python -m pip install -e .[dev]
+        run: python -m pip install -r requirements-dev.txt
 
       - name: Check Docker availability
         run: docker info

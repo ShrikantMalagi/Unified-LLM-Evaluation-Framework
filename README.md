@@ -10,6 +10,13 @@ pytest -q
 python -m examples.qa_eval
 ```
 
+For reproducible local installs, use the pinned requirements files:
+
+```powershell
+python -m pip install -r requirements-dev.txt
+python -m pip install -r requirements.txt
+```
+
 Install backend extras as needed:
 
 ```powershell
@@ -125,6 +132,7 @@ Each `messages` item may be either a string or a dict with `role` and `content`.
 ## Notes
 
 - Install the repo with `pip install -e .` so imports and tests work without setting `PYTHONPATH` manually.
+- `constraints.txt` pins direct optional/dev dependencies for reproducible installs; refresh it intentionally when upgrading `deepeval`, `ragas`, or other backends.
 - Run examples from the repo root with `python -m examples.qa_eval` or `python -m examples.rag_eval`.
 - DeepEval metrics vary by version. If a default metric is missing, pass explicit metric objects to `DeepEvalEvaluator`.
 - Dependency upgrades for `deepeval` and `ragas` are guarded by adapter compatibility tests; run `pytest -q` after changing versions to catch API drift.

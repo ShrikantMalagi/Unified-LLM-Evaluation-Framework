@@ -1,7 +1,2 @@
-deepeval
-ragas
-datasets
-pandas
-pytest
-
-mlflow
+-c constraints.txt
+-e .[qa,rag,mlflow,dev]
