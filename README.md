@@ -10,6 +10,8 @@ This project is a framework that routes datasets to existing evaluation librarie
 
 ```powershell
 python -m pip install -e .[dev]
+python -m ruff check .
+python -m mypy
 pytest -q
 python -m examples.qa_eval
 ```
@@ -102,7 +104,7 @@ log_comparison(comparison)
 
 GitHub Actions runs the default test suite on pushes and pull requests across Python 3.10, 3.11, and 3.12.
 
-The workflow also includes a manual Docker smoke job. Trigger it from the GitHub Actions UI with `workflow_dispatch` when you want to validate the real containerized code-evaluation path.
+The default CI job also runs Ruff linting and mypy type checks before tests. The workflow includes a manual Docker smoke job; trigger it from the GitHub Actions UI with `workflow_dispatch` when you want to validate the real containerized code-evaluation path.
 
 ## Docker Code Evaluation
 

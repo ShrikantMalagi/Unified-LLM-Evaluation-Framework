@@ -48,8 +48,8 @@ class RagasEvaluator(Evaluator):
 
     def evaluate(self, dataset: Dataset, model: Model) -> dict[str, Any]:
         try:
-            from ragas import evaluate as ragas_evaluate
             from datasets import Dataset as HFDataset
+            from ragas import evaluate as ragas_evaluate
         except ImportError as exc:
             raise ImportError(
                 "ragas (and datasets) are required for RagasEvaluator. Install with `pip install ragas datasets`."

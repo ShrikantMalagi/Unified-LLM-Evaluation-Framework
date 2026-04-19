@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 from core.dataset import Dataset, normalize_dataset
 from core.model import Model
-from core.router import get_evaluator
 from core.output import normalize_and_validate
+from core.router import get_evaluator
 
 
 def evaluate(dataset: Dataset | Iterable[dict[str, Any]], model: Model, task_type: str | None = None) -> dict[str, Any]:

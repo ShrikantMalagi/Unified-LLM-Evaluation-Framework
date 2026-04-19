@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import time
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 from core.dataset import Dataset
 from core.evaluator import Evaluator
@@ -13,7 +14,7 @@ class DeepEvalEvaluator(Evaluator):
         self._metric_specs = list(metrics) if metrics is not None else ["relevance", "correctness", "hallucination"]
         self._metric_kwargs = metric_kwargs or {}
 
-    def _build_metrics(self) -> list[tuple[str, object]]:
+    def _build_metrics(self) -> list[tuple[str, Any]]:
         try:
             from deepeval import metrics as deepeval_metrics
         except ImportError as exc:
@@ -21,7 +22,7 @@ class DeepEvalEvaluator(Evaluator):
                 "deepeval is required for DeepEvalEvaluator. Install with `pip install deepeval`."
             ) from exc
 
-        resolved: list[tuple[str, object]] = []
+        resolved: list[tuple[str, Any]] = []
         for spec in self._metric_specs:
             if not isinstance(spec, str):
                 name = getattr(spec, "name", spec.__class__.__name__).lower()

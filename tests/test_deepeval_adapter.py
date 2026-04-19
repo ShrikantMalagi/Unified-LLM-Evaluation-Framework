@@ -108,10 +108,10 @@ def test_deepeval_evaluator_passes_metric_kwargs(monkeypatch):
     )
     model = CallableModel(name="qa-model", fn=lambda _prompt: "4")
 
-    result = evaluator.evaluate(
-        dataset=type("D", (), {"samples": [type("S", (), {"input": "Q", "expected_output": "4", "context": None})()], "task_type": "qa"})(),
-        model=model,
-    )
+    sample = type("S", (), {"input": "Q", "expected_output": "4", "context": None})()
+    dataset = type("D", (), {"samples": [sample], "task_type": "qa"})()
+
+    result = evaluator.evaluate(dataset=dataset, model=model)
 
     assert seen_kwargs == {"threshold": 0.5, "model": "judge-model"}
     assert result["scores"]["relevance"] == pytest.approx(1.0)
