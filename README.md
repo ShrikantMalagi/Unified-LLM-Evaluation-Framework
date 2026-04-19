@@ -1,5 +1,9 @@
 # Unified LLM Evaluation Framework
 
+[![CI](https://github.com/ShrikantMalagi/Unified-LLM-Evaluation-Framework/actions/workflows/ci.yml/badge.svg)](https://github.com/ShrikantMalagi/Unified-LLM-Evaluation-Framework/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+
 This project is a framework that routes datasets to existing evaluation libraries under a single, lightweight interface. It does **not** reimplement metrics.
 
 ## Quick Start
@@ -94,6 +98,28 @@ log_comparison(comparison)
 - Code evaluator (executes generated code against tests)
 - Optional: MLflow logging (see MLflow Logging)
 
+## CI
+
+GitHub Actions runs the default test suite on pushes and pull requests across Python 3.10, 3.11, and 3.12.
+
+The workflow also includes a manual Docker smoke job. Trigger it from the GitHub Actions UI with `workflow_dispatch` when you want to validate the real containerized code-evaluation path.
+
+## Docker Code Evaluation
+
+The code evaluator defaults to a separate Python subprocess with a timeout. For stronger isolation, instantiate it with Docker mode:
+
+```python
+from adapters.code_adapter import CodeEvaluator
+
+evaluator = CodeEvaluator(
+    execution_mode="docker",
+    timeout_seconds=10.0,
+    docker_image="python:3.11-slim",
+)
+```
+
+Docker mode runs with no network, a read-only container filesystem, dropped capabilities, no-new-privileges, PID limits, CPU/memory limits, and tmpfs scratch paths. It still executes arbitrary generated code, so treat inputs as untrusted and keep Docker isolation enabled for untrusted workloads.
+
 ## Repository Structure
 
 ```
@@ -107,7 +133,10 @@ Unified-LLM-Evaluation-Framework/
     mlflow_logger.py
   examples/
   tests/
+  constraints.txt
+  requirements-dev.txt
   requirements.txt
+  CONTRIBUTING.md
   README.md
 ```
 
