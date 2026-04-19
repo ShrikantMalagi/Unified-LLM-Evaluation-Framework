@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 from adapters.code_adapter import CodeEvaluator
 from adapters.deepeval_adapter import DeepEvalEvaluator
 from adapters.ragas_adapter import RagasEvaluator
-
 
 _EVALUATOR_REGISTRY: dict[str, Callable[[], object]] = {
     "rag": RagasEvaluator,

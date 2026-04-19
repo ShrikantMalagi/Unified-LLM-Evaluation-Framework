@@ -19,10 +19,12 @@ python -m pip install -r requirements.txt
 Run the default test suite before opening a pull request:
 
 ```powershell
+python -m ruff check .
+python -m mypy
 pytest -q
 ```
 
-The default suite intentionally stubs optional services and skips real Docker execution.
+Ruff checks lint/import hygiene, mypy checks package code and examples, and the default pytest suite intentionally stubs optional services and skips real Docker execution.
 
 ## Docker Smoke Test
 
