@@ -14,6 +14,7 @@ python -m ruff check .
 python -m mypy
 pytest -q
 python -m build
+python -m twine check dist/*
 python -m examples.qa_eval
 ```
 
@@ -105,7 +106,7 @@ log_comparison(comparison)
 
 GitHub Actions runs the default test suite on pushes and pull requests across Python 3.10, 3.11, and 3.12.
 
-The default CI job also runs Ruff linting, mypy type checks, tests, and package build validation. The workflow includes a manual Docker smoke job; trigger it from the GitHub Actions UI with `workflow_dispatch` when you want to validate the real containerized code-evaluation path.
+The default CI job also runs Ruff linting, mypy type checks, tests, package build validation, and Twine metadata checks. The workflow includes manual Docker and optional-backend smoke jobs; trigger it from the GitHub Actions UI with `workflow_dispatch` when you want to validate those real runtime paths.
 
 ## Docker Code Evaluation
 
@@ -139,7 +140,9 @@ Unified-LLM-Evaluation-Framework/
   constraints.txt
   requirements-dev.txt
   requirements.txt
+  CHANGELOG.md
   CONTRIBUTING.md
+  RELEASE.md
   README.md
 ```
 
@@ -172,4 +175,5 @@ Each `messages` item may be either a string or a dict with `role` and `content`.
 - Code evaluation defaults to a separate Python process with a timeout. For stronger isolation, use `CodeEvaluator(execution_mode="docker")` to run code in a locked-down container.
 - Docker mode expects a local Docker daemon and uses `--network none`, `--read-only`, capability drops, PID limits, CPU/memory limits, and tmpfs-backed writable scratch paths.
 - Real Docker smoke tests are opt-in: run `RUN_DOCKER_SMOKE=1 pytest -q -m docker` on shells that support POSIX env syntax, or `$env:RUN_DOCKER_SMOKE='1'; pytest -q -m docker` in PowerShell.
+- Real optional-backend smoke tests are opt-in: install `requirements.txt`, then run `$env:RUN_BACKEND_SMOKE='1'; pytest -q -m backend` in PowerShell.
 - Even in Docker mode, generated code should still be treated as untrusted and handled cautiously.
