@@ -22,9 +22,10 @@ Run the default test suite before opening a pull request:
 python -m ruff check .
 python -m mypy
 pytest -q
+python -m build
 ```
 
-Ruff checks lint/import hygiene, mypy checks package code and examples, and the default pytest suite intentionally stubs optional services and skips real Docker execution.
+Ruff checks lint/import hygiene, mypy checks package code and examples, `python -m build` validates source/wheel packaging, and the default pytest suite intentionally stubs optional services and skips real Docker execution.
 
 ## Docker Smoke Test
 
