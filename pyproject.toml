@@ -39,7 +39,7 @@ Issues = "https://github.com/ShrikantMalagi/Unified-LLM-Evaluation-Framework/iss
 qa = ["deepeval"]
 rag = ["ragas", "datasets", "pandas"]
 mlflow = ["mlflow"]
-dev = ["pytest", "ruff", "mypy", "build"]
+dev = ["pytest", "ruff", "mypy", "build", "twine"]
 
 [tool.setuptools]
 packages = ["adapters", "core", "metrics", "runners"]
@@ -48,6 +48,7 @@ packages = ["adapters", "core", "metrics", "runners"]
 testpaths = ["tests"]
 markers = [
   "docker: real Docker smoke tests; opt in with RUN_DOCKER_SMOKE=1",
+  "backend: real optional-backend smoke tests; opt in with RUN_BACKEND_SMOKE=1",
 ]
 
 [tool.ruff]

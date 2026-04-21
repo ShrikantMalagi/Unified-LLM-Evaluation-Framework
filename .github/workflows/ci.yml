@@ -37,6 +37,9 @@ jobs:
       - name: Build package
         run: python -m build
 
+      - name: Check package metadata
+        run: python -m twine check dist/*
+
   docker-smoke:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -60,3 +63,24 @@ jobs:
         env:
           RUN_DOCKER_SMOKE: "1"
         run: pytest -q -m docker
+
+  backend-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install all optional backends
+        run: python -m pip install -r requirements.txt
+
+      - name: Run optional-backend smoke tests
+        env:
+          RUN_BACKEND_SMOKE: "1"
+        run: pytest -q -m backend

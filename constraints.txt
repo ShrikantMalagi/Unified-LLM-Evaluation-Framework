@@ -11,6 +11,7 @@
 # - ruff 0.15.9
 # - mypy 1.20.1
 # - build 1.4.3
+# - twine 6.2.0
 deepeval==3.9.7
 ragas==0.4.3
 datasets==4.5.0
@@ -20,3 +21,4 @@ mlflow==3.10.1
 ruff==0.15.9
 mypy==1.20.1
 build==1.4.3
+twine==6.2.0
